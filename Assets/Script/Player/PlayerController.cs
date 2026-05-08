@@ -4,8 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D _rigidbody;
-    private Collider2D _col;
+    [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private Collider2D _collider;
 
     [Header("이동")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _col = GetComponent<Collider2D>();
+        _rigidbody ??= GetComponent<Rigidbody2D>();
+        _collider ??= GetComponent<Collider2D>();
     }
 
     private void FixedUpdate()
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     // =========================
     private void CheckGround()
     {
-        Bounds b = _col.bounds;
+        Bounds b = _collider.bounds;
 
         RaycastHit2D box = Physics2D.BoxCast(
             b.center,
@@ -79,8 +79,6 @@ public class PlayerController : MonoBehaviour
             _groundLayer
         );
         _isGrounded = box.collider != null;
-
-        // OnDrawGizmos();
     }
 
     // =========================
@@ -88,9 +86,9 @@ public class PlayerController : MonoBehaviour
     // =========================
     private void OnDrawGizmos()
     {
-        if (_col == null) return;
+        if (_collider == null) return;
 
-        Bounds b = _col.bounds;
+        Bounds b = _collider.bounds;
         Gizmos.color = _isGrounded ? Color.green : Color.red;
 
         Gizmos.DrawWireCube(

@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 public class PlayerInputHandler : MonoBehaviour
 {
     /// <summary>플레이어의 이동을 제어하는 스크립트</summary>
-    private PlayerController _playerController;
+    [SerializeField] private PlayerController _playerController;
 
     private float _moveInput;
     void Awake()
     {
-        _playerController = GetComponent<PlayerController>();
+        _playerController ??= GetComponent<PlayerController>();
     }
 
     void Update()
