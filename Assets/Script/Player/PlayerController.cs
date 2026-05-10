@@ -7,106 +7,117 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Collider2D _collider;
 
-    [Header("이동")]
-    [SerializeField] private float _moveSpeed = 5f;
-    private float _inputDirX;
+    [Header("이동/점프")]
+    [SerializeField] private PlayerMotor _motor = new();
 
-    [Header("점프")]
-    [SerializeField] private float _jumpForce = 5f;
+    [Header("감지")]
+    [SerializeField] private PlayerSensor _sensor = new();
+
+    [Header("대쉬")]
+    [SerializeField] private PlayerDash _dash = new();
+
+    private Vector2 _moveInput;
+    private float _facingDir = 1f;
     private bool _jumpRequested;
-
-    [Header("바닥 체크")]
-    [SerializeField] private float _groundCheckDistance = 0.1f;
-    [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private bool _isGrounded;
+    private bool _dashRequested;
+    private bool _wasGrounded;
 
     private void Awake()
     {
         _rigidbody ??= GetComponent<Rigidbody2D>();
         _collider ??= GetComponent<Collider2D>();
+
+        _motor.Initialize(_rigidbody);
+        _sensor.Initialize(_collider);
+        _dash.Initialize();
     }
 
     private void FixedUpdate()
     {
-        CheckGround();
-        HandleMove();
-        HandleJump();
-    }
+        _wasGrounded = _sensor.IsGrounded;
+        _sensor.UpdateContacts();
+        _dash.RefreshCharge(_sensor.IsGrounded, _wasGrounded);
 
-    // =========================
-    // 이동 처리
-    // =========================
-    private void HandleMove()
-    {
-        Vector2 velocity = _rigidbody.linearVelocity;
-        velocity.x = _inputDirX * _moveSpeed;
-        _rigidbody.linearVelocity = velocity;
-    }
-
-    // =========================
-    // 점프 처리
-    // =========================
-    private void HandleJump()
-    {
-        if (!_jumpRequested || !_isGrounded)
+        if (HandleDash())
         {
             _jumpRequested = false;
             return;
         }
 
-        Vector2 velocity = _rigidbody.linearVelocity;
-        velocity.y = 0f;
-        _rigidbody.linearVelocity = velocity;
+        HandleMove();
+        HandleJump();
+    }
 
-        _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+    private bool HandleDash()
+    {
+        if (_dash.Tick(_motor))
+        {
+            if (_dash.ShouldCancelByCollision(_sensor))
+            {
+                _dash.Cancel(_motor);
+            }
 
+            return true;
+        }
+
+        if (!_dashRequested)
+        {
+            return false;
+        }
+
+        _dashRequested = false;
+        return _dash.TryStart(_moveInput, _facingDir, _motor);
+    }
+
+    private void HandleMove()
+    {
+        _motor.MoveHorizontally(_moveInput.x);
+    }
+
+    private void HandleJump()
+    {
+        if (!_jumpRequested || !_sensor.IsGrounded)
+        {
+            _jumpRequested = false;
+            return;
+        }
+
+        _motor.Jump();
         _jumpRequested = false;
     }
 
-    // =========================
-    // 바닥 체크
-    // =========================
-    private void CheckGround()
-    {
-        Bounds b = _collider.bounds;
-
-        RaycastHit2D box = Physics2D.BoxCast(
-            b.center,
-            b.size,
-            0f,
-            Vector2.down,
-            _groundCheckDistance,
-            _groundLayer
-        );
-        _isGrounded = box.collider != null;
-    }
-
-    // =========================
-    // 씬 뷰 시각화
-    // =========================
     private void OnDrawGizmos()
     {
-        if (_collider == null) return;
+        if (_collider == null)
+        {
+            _collider = GetComponent<Collider2D>();
+        }
 
-        Bounds b = _collider.bounds;
-        Gizmos.color = _isGrounded ? Color.green : Color.red;
+        if (_collider == null)
+        {
+            return;
+        }
 
-        Gizmos.DrawWireCube(
-            new Vector2(b.center.x, b.min.y - _groundCheckDistance / 2f),
-            new Vector2(b.size.x, _groundCheckDistance)
-        );
+        _sensor.DrawGizmos(_collider);
     }
 
-    // =========================
-    // 입력 (외부에서 호출)
-    // =========================
-    public void OnMove(float dirX)
+    public void OnMove(Vector2 moveInput)
     {
-        _inputDirX = dirX;
+        _moveInput = moveInput;
+
+        if (Mathf.Abs(moveInput.x) > 0.01f)
+        {
+            _facingDir = Mathf.Sign(moveInput.x);
+        }
     }
 
     public void OnJump()
     {
         _jumpRequested = true;
+    }
+
+    public void OnDash()
+    {
+        _dashRequested = true;
     }
 }

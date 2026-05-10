@@ -476,8 +476,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 977517269}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &641927061
@@ -541,7 +540,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 7
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -551,7 +550,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &641927063
 MonoBehaviour:
@@ -593,7 +592,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 85f40498-3662-46ef-bfbf-5405994b1eed
-    m_ActionName: 'PlayerInput/Move[/Keyboard/a,/Keyboard/d]'
+    m_ActionName: 'PlayerInput/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 641927064}
@@ -610,6 +609,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e17ac494-e605-4829-a728-483ee845e23e
     m_ActionName: 'PlayerInput/Jump[/Keyboard/w]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 641927064}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5dbde87a-71ae-4b99-af06-0d8a4ca2f8c9
+    m_ActionName: 'PlayerInput/Dash[/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerInput
@@ -642,13 +657,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 641927062}
   _collider: {fileID: 641927061}
-  _moveSpeed: 10
-  _jumpForce: 25
-  _groundCheckDistance: 0.1
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _isGrounded: 0
+  _motor:
+    _moveSpeed: 10
+    _jumpForce: 25
+  _sensor:
+    _groundCheckDistance: 0.1
+    _groundSideInset: 0.2
+    _groundLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    _wallCheckDistance: 0.08
+    _wallLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    _ceilingCheckDistance: 0.08
+    <IsGrounded>k__BackingField: 0
+  _dash:
+    _dashSpeed: 50
+    _dashDuration: 0.125
 --- !u!1 &943017074
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,7 +900,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 641927060}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &977517270
 MonoBehaviour:
@@ -1192,6 +1218,7 @@ BoxCollider2D:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 977517269}
   - {fileID: 641927060}
   - {fileID: 560571653}
   - {fileID: 346637761}
