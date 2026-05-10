@@ -10,7 +10,7 @@
                     "name": "Move",
                     "type": "Value",
                     "id": "85f40498-3662-46ef-bfbf-5405994b1eed",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -23,13 +23,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "5dbde87a-71ae-4b99-af06-0d8a4ca2f8c9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "1D Axis",
+                    "name": "2D Vector",
                     "id": "99aa11f2-c203-403d-9f72-da0d209ed4e0",
-                    "path": "1DAxis",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -38,7 +47,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "left",
                     "id": "c6cab1e4-e077-4370-b99c-f5d83ae3ad45",
                     "path": "<Keyboard>/a",
                     "interactions": "",
@@ -49,9 +58,31 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "right",
                     "id": "233334bf-6581-488e-902c-986de08f5334",
                     "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "up",
+                    "id": "c87c4f31-9dcb-4cc1-a370-2d0054f6c41a",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "87061fc1-87ce-4f4b-9cad-a34b7347a7d2",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -67,6 +98,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e337b921-42c9-4c97-9204-ff149a12cd31",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
