@@ -11,7 +11,6 @@ public class PlayerSensor
 
     [Header("벽 체크")]
     [SerializeField] private float _wallCheckDistance = 0.08f;
-    [SerializeField] private LayerMask _wallLayer;
 
     [Header("천장 체크")]
     [SerializeField] private float _ceilingCheckDistance = 0.08f;
@@ -32,7 +31,6 @@ public class PlayerSensor
     public void UpdateContacts()
     {
         Bounds bounds = _collider.bounds;
-        LayerMask wallMask = _wallLayer.value != 0 ? _wallLayer : _groundLayer;
 
         IsGrounded = Physics2D.OverlapBox(
             GetGroundProbeCenter(bounds),
@@ -45,21 +43,21 @@ public class PlayerSensor
             GetLeftWallProbeCenter(bounds),
             GetWallProbeSize(bounds),
             0f,
-            wallMask
+            _groundLayer
         ) != null;
 
         IsTouchingWallRight = Physics2D.OverlapBox(
             GetRightWallProbeCenter(bounds),
             GetWallProbeSize(bounds),
             0f,
-            wallMask
+            _groundLayer
         ) != null;
 
         IsTouchingCeiling = Physics2D.OverlapBox(
             GetCeilingProbeCenter(bounds),
             GetCeilingProbeSize(bounds),
             0f,
-            wallMask
+            _groundLayer
         ) != null;
     }
 
