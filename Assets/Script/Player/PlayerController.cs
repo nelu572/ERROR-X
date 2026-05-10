@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private float _facingDir = 1f;
     private bool _jumpRequested;
     private bool _dashRequested;
+    private bool _wasGrounded;
 
     private void Awake()
     {
@@ -28,13 +29,14 @@ public class PlayerController : MonoBehaviour
 
         _motor.Initialize(_rigidbody);
         _sensor.Initialize(_collider);
-        _dash.Initialize(_motor.GravityScale);
+        _dash.Initialize();
     }
 
     private void FixedUpdate()
     {
+        _wasGrounded = _sensor.IsGrounded;
         _sensor.UpdateContacts();
-        _dash.RefreshCharge(_sensor.IsGrounded);
+        _dash.RefreshCharge(_sensor.IsGrounded, _wasGrounded);
 
         if (HandleDash())
         {

@@ -10,17 +10,16 @@ public class PlayerDash
     public bool CanDash { get; private set; } = true;
 
     private float _dashTimer;
-    private float _defaultGravityScale;
+    private float _storedGravityScale;
     private Vector2 _dashDirection;
 
-    public void Initialize(float defaultGravityScale)
+    public void Initialize()
     {
-        _defaultGravityScale = defaultGravityScale;
     }
 
-    public void RefreshCharge(bool isGrounded)
+    public void RefreshCharge(bool isGrounded, bool wasGrounded)
     {
-        if (isGrounded)
+        if (isGrounded && !wasGrounded)
         {
             CanDash = true;
         }
@@ -36,6 +35,7 @@ public class PlayerDash
         CanDash = false;
         IsDashing = true;
         _dashTimer = _dashDuration;
+        _storedGravityScale = motor.GravityScale;
         motor.GravityScale = 0f;
 
         _dashDirection = moveInput.sqrMagnitude > 0.01f
@@ -82,7 +82,7 @@ public class PlayerDash
     private void End(PlayerMotor motor)
     {
         IsDashing = false;
-        motor.GravityScale = _defaultGravityScale;
+        motor.GravityScale = _storedGravityScale;
         motor.SetVelocity(Vector2.zero);
     }
 }
