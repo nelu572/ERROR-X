@@ -25,7 +25,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "Run",
                     "type": "Button",
                     "id": "5dbde87a-71ae-4b99-af06-0d8a4ca2f8c9",
                     "expectedControlType": "",
@@ -93,7 +93,7 @@
                 {
                     "name": "",
                     "id": "aa627f57-238c-444e-9b4e-00b5173a0541",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -108,7 +108,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

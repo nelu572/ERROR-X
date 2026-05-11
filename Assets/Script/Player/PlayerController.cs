@@ -13,14 +13,17 @@ public class PlayerController : MonoBehaviour
     [Header("감지")]
     [SerializeField] private PlayerSensor _sensor = new();
 
-    [Header("대쉬")]
-    [SerializeField] private PlayerDash _dash = new();
-
     private Vector2 _moveInput;
     private float _facingDir = 1f;
     private bool _jumpRequested;
-    private bool _dashRequested;
+    private bool _isRunHeld;
     private bool _wasGrounded;
+    private bool _isAirDashing;
+    private float _airDashTimer;
+    private int _jumpCount;
+
+    [Header("공중 대쉬")]
+    [SerializeField] private float _airDashDuration = 0.12f;
 
     private void Awake()
     {
@@ -29,61 +32,81 @@ public class PlayerController : MonoBehaviour
 
         _motor.Initialize(_rigidbody);
         _sensor.Initialize(_collider);
-        _dash.Initialize();
     }
 
     private void FixedUpdate()
     {
         _wasGrounded = _sensor.IsGrounded;
         _sensor.UpdateContacts();
-        _dash.RefreshCharge(_sensor.IsGrounded, _wasGrounded);
-
-        if (HandleDash())
-        {
-            _jumpRequested = false;
-            return;
-        }
+        RefreshJumpState();
 
         HandleMove();
         HandleJump();
-    }
-
-    private bool HandleDash()
-    {
-        if (_dash.Tick(_motor))
-        {
-            if (_dash.ShouldCancelByCollision(_sensor))
-            {
-                _dash.Cancel(_motor);
-            }
-
-            return true;
-        }
-
-        if (!_dashRequested)
-        {
-            return false;
-        }
-
-        _dashRequested = false;
-        return _dash.TryStart(_moveInput, _facingDir, _motor);
+        UpdateAirDash();
     }
 
     private void HandleMove()
     {
-        _motor.MoveHorizontally(_moveInput.x);
+        if (_isAirDashing)
+        {
+            return;
+        }
+
+        _motor.MoveHorizontally(_moveInput.x, _isRunHeld, _sensor.IsGrounded);
     }
 
     private void HandleJump()
     {
-        if (!_jumpRequested || !_sensor.IsGrounded)
+        if (!_jumpRequested)
         {
-            _jumpRequested = false;
             return;
         }
 
-        _motor.Jump();
+        if (_sensor.IsGrounded)
+        {
+            _motor.Jump();
+            _jumpCount = 1;
+        }
+        else if (_jumpCount == 1)
+        {
+            StartAirDash();
+            _jumpCount = 2;
+        }
+
         _jumpRequested = false;
+    }
+
+    private void RefreshJumpState()
+    {
+        if (_sensor.IsGrounded && !_wasGrounded)
+        {
+            _jumpCount = 0;
+            _isAirDashing = false;
+            _airDashTimer = 0f;
+        }
+    }
+
+    private void StartAirDash()
+    {
+        _isAirDashing = true;
+        _airDashTimer = _airDashDuration;
+        _motor.AirDash(_facingDir, _moveInput.x, _isRunHeld);
+    }
+
+    private void UpdateAirDash()
+    {
+        if (!_isAirDashing)
+        {
+            return;
+        }
+
+        _airDashTimer -= Time.fixedDeltaTime;
+        _motor.AirDash(_facingDir, _moveInput.x, _isRunHeld);
+
+        if (_airDashTimer <= 0f)
+        {
+            _isAirDashing = false;
+        }
     }
 
     private void OnDrawGizmos()
@@ -116,8 +139,8 @@ public class PlayerController : MonoBehaviour
         _jumpRequested = true;
     }
 
-    public void OnDash()
+    public void OnRun(bool isHeld)
     {
-        _dashRequested = true;
+        _isRunHeld = isHeld;
     }
 }

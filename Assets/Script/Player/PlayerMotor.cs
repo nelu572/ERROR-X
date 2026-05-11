@@ -4,27 +4,22 @@ using UnityEngine;
 public class PlayerMotor
 {
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _runSpeed = 8f;
     [SerializeField] private float _jumpForce = 5f;
+    [SerializeField] private float _airDashSpeedBonus = 10f;
 
     private Rigidbody2D _rigidbody;
-
-    public float MoveSpeed => _moveSpeed;
-
-    public float GravityScale
-    {
-        get => _rigidbody.gravityScale;
-        set => _rigidbody.gravityScale = value;
-    }
 
     public void Initialize(Rigidbody2D rigidbody)
     {
         _rigidbody = rigidbody;
     }
 
-    public void MoveHorizontally(float inputX)
+    public void MoveHorizontally(float inputX, bool isRunning, bool isGrounded)
     {
         Vector2 velocity = _rigidbody.linearVelocity;
-        velocity.x = inputX * _moveSpeed;
+        float targetSpeed = isRunning ? _runSpeed : _moveSpeed;
+        velocity.x = inputX * targetSpeed;
         _rigidbody.linearVelocity = velocity;
     }
 
@@ -37,13 +32,16 @@ public class PlayerMotor
         _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
     }
 
-    public Vector2 GetVelocity()
+    public void AirDash(float facingDir, float inputX, bool isRunning)
     {
-        return _rigidbody.linearVelocity;
-    }
+        float horizontalDir = Mathf.Abs(inputX) > 0.01f
+            ? Mathf.Sign(inputX)
+            : facingDir;
 
-    public void SetVelocity(Vector2 velocity)
-    {
+        float baseSpeed = isRunning ? _runSpeed : _moveSpeed;
+        Vector2 velocity = _rigidbody.linearVelocity;
+        velocity.x = horizontalDir * (baseSpeed + _airDashSpeedBonus);
+        velocity.y = 0;
         _rigidbody.linearVelocity = velocity;
     }
 }
