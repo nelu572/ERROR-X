@@ -29,17 +29,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ArtifactStrength: 1
+    - _ArtifactStrength: 0.963
     - _ColorMask: 15
-    - _Intensity: 0
-    - _JitterSpeed: 8
+    - _Intensity: 0.2
+    - _JitterSpeed: 6
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _StripFrequency: 17
-    - _TriggerRate: 1
+    - _StripFrequency: 240
+    - _TriggerRate: 0.989
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 0.85, g: 0.85, b: 0.85, a: 1}

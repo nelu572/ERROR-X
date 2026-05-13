@@ -2,20 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_MenuUiNoise_Subtle
   m_Shader: {fileID: 4800000, guid: 82be1ec2defdd81469c6d435f102aeb2, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -23,13 +27,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _BandingScale: 16
     - _BandingStrength: 0.02
     - _ColorMask: 15
-    - _NoiseIntensity: 0.025
-    - _NoiseScale: 4
-    - _NoiseSpeed: 0.55
+    - _NoiseIntensity: 0
+    - _NoiseScale: 1
+    - _NoiseSpeed: 3.43
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -38,3 +43,5 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 0.82, g: 0.82, b: 0.82, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
