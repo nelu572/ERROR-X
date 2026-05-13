@@ -13,6 +13,7 @@ namespace ErrorX.Editor
             "_TriggerRate",
             "_ArtifactStrength",
             "_JitterSpeed",
+            "_GrayscaleAmount",
         };
 
         private ShaderGUI _tmpGui;

@@ -87,6 +87,7 @@ Properties {
 	_TriggerRate		("Intermittency", Range(0, 1)) = 0.18
 	_ArtifactStrength	("Clip Artifact Strength", Range(0, 1)) = 0.35
 	_JitterSpeed		("Jitter Speed", Range(0, 8)) = 1.5
+	_GrayscaleAmount	("Grayscale Amount", Range(0, 1)) = 0
 }
 
 SubShader {
@@ -172,6 +173,7 @@ SubShader {
 		float _TriggerRate;
 		float _ArtifactStrength;
 		float _JitterSpeed;
+		float _GrayscaleAmount;
 
 		inline float Hash11(float p)
 		{
@@ -344,7 +346,7 @@ SubShader {
 		    #endif
 
 			float gray = dot(faceColor.rgb, float3(0.299, 0.587, 0.114));
-			faceColor.rgb = gray.xxx;
+			faceColor.rgb = lerp(faceColor.rgb, gray.xxx, _GrayscaleAmount);
   		    return faceColor * input.color.a;
 		}
 		ENDCG
