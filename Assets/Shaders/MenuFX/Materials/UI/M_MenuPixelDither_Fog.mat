@@ -30,8 +30,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _Contrast: 1.5
-    - _DitherScale: 6.1
+    - _Contrast: 1.474
+    - _DitherScale: 7.18
     - _QuantizeSteps: 2
     - _Stencil: 0
     - _StencilComp: 8

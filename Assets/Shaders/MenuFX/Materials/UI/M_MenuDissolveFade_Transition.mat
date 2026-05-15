@@ -30,9 +30,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _DissolveContrast: 0.5
-    - _Fade: 0.515
-    - _NoiseScale: 1.6
+    - _DissolveContrast: 0.94
+    - _Fade: 0.237
+    - _NoiseScale: 10.4
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0

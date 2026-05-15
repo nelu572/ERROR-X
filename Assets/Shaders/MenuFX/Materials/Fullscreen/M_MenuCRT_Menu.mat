@@ -26,10 +26,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Brightness: 0.9
-    - _Curvature: 0.012
-    - _ScanlineDensity: 420
-    - _ScanlineStrength: 0.08
-    - _VignetteStrength: 0.14
+    - _Curvature: 0.0461
+    - _ScanlineDensity: 571
+    - _ScanlineStrength: 0.16
+    - _VignetteStrength: 0.248
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
